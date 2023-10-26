@@ -1,12 +1,13 @@
 ﻿#include <iostream>
 using namespace std;
+
 int main()
 {
     srand(time(NULL));
     setlocale(LC_ALL, "");
-    int plWin = 0;
+    int playerWin = 0;
     int pcWin = 0;
-    const int coutWins = 3;
+    const int countWins = 3;
     const int coutAttempts = 5;
     const int minRange = 1;
     const int maxRange = 100;
@@ -14,49 +15,48 @@ int main()
 
     while (true) {
         system("cls");
-        cout << "Компьютер загадал число, попробуй отгадать";
+        cout << "общий счет: игрок - " << playerWin << " : пк -" << pcWin << endl;
+        cout << "Компьютер загадал число в диапазоне от "<< minRange<<" до "<<
+            maxRange<<"."<<endl<<"Попробуй отгадать." << endl;
         pcNum = minRange + rand() % (maxRange + 1 - minRange);
+        bool flag = false; //флаг для определения угадано число или нет
         for (int i = 0; i < coutAttempts; i++) {
-
-        
-            bool flag = false; // флаг для определения угадано число или нет
-            cout << "введите число:  " << endl;
+            cout << "введите число: ";
             cin >> plNum;
             if (plNum > pcNum)
-            cout << "загаданное число меньше" << endl;
+                cout << "загаданное число меньше" << endl;
             else if (plNum < pcNum)
                 cout << "загаданное число больше" << endl;
             else {
-                cout << "Вы угадали число " << endl;
-            flag = true;
-            break;
-
-            (flag) ? plWin++ : pcWin++;
-            if (plWin >= coutWins) {
-                cout << "победа игрока со счётом - " << plWin << "";
-         
+                cout << "вы угадали число" << endl;
+                flag = true;
+                break;
+            }
         }
+        if (flag) {
+            playerWin++;
+            cout << "вы выиграли в этом раунде." << endl;
+            cout << "общий счет: игрок - " << playerWin << " : пк -" << pcWin << endl;
+        }
+        else {
+            pcWin++;
+            cout << "вы проиграли в этом раунде." << endl;
+            cout << "общий счет: игрок - " << playerWin << " : пк -" << pcWin << endl;
+        }
+        if (playerWin >= countWins) {
+            cout << "победил игрок со счетом - " << playerWin << " : " << pcWin << endl;
+            break;
+        }
+        else if (pcWin >= countWins) {
+            cout << "победил компьютер со счетом - " << playerWin << " : " << pcWin << endl;
+            break;
+        }
+        system("pause");
+
     }
-   
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
