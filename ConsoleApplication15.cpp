@@ -1,115 +1,101 @@
 ﻿#include <iostream>
-#include <ctime>
-#include <Windows.h>
+#include <stack>
+#include <algorithm>
+#include<concepts>
+#include<type_traits>
 using namespace std;
+class Ammo {
+protected:
+	int damage;
+public:
+	virtual int getDamage() = 0;
+};
+class AmmoType5_56 : public Ammo {
+};
+class AmmoType5_56_BP :public AmmoType5_56 {
+public:
+	AmmoType5_56_BP(int damage) { this->damage = 6; }
+	int getDamage() { return this->damage; }
+};
+class AmmoType5_56_PS :public AmmoType5_56 {
+public:
+	AmmoType5_56_PS(int damage) { this->damage = 5; }
+	int getDamage() { return this->damage; }
+};
+class AmmoType7_62 : public Ammo {
+};
+class AmmoType7_62_BP : public Ammo {
+public:
+	AmmoType7_62_BP(int damage) { this->damage = 7; }
+	int getDamage() { return this->damage; }
+};
+class AmmoType7_62_PS : public Ammo {
+public:
+	AmmoType7_62_PS(int damage) { this->damage = 6; }
+	int getDamage() { return this->damage; }
+};
+class AmmoType9_19 : public Ammo {
+};
+class AmmoType9_19_BP : public AmmoType9_19 {
+public:
+	AmmoType9_19_BP(int damage) { this->damage = 9; }
+	int getDamage() { return this->damage; }
+};
+class AmmoType9_19_PS : public AmmoType9_19 {
+public:
+	AmmoType9_19_PS(int damage) { this->damage = 7; }
+	int getDamage() { return this->damage; }
+};
+template<typename T>
+concept AmmoType = is_base_of<Ammo, remove_pointer<T>>::value && !is_same_v<Ammo, remove_pointer<T>>;
+template<typename T>
+class Magazin {
+private:
+	stack<T> bullets;
+	int amount;
+public:
+	Magazin(int amount) :amount(amount) {}
+	void loadAmmo(T bullet) {
+		if (bullets.size() >= amount)throw out_of_range("full!");
+		bullets.push(bullet);
+	}
+	T unLoadBullet() {
+		if (bullets.empty()) throw out_of_range("empty");
+		T bullet = bullets.top();
+		bullets.pop();
+		return bullet;
+	}
+	stack<T*> fullUnload() {
+		if (bullets.empty()) throw out_of_range("empty");
+		stack<T> unloadBullets = bullets;
+		for (; !bullets.empty();)bullets.pop();
+		return unloadBullets;
+	}
+	int info() {
+		cout << "Type: " << bullets.top()->getName << endl;
+		cout << "Bullets: " << bullets.size() << endl;
+	}
+};
+class Weapon {
+private:
 
+};
+class Human {
+};
 int main()
 {
-    srand(time(NULL));
-    const int SIZE = 100;
-    int begin = 0;
-    int iterazz = 0;
-    int min = 10;
-    int max = 100;
-    int end = SIZE;
-    int array1[SIZE] = {};
-    int bubiterazz = 0;
-    cout << "bubble sort: " << endl;
-    for (int i = 0; i < SIZE; i++) {
-        array1[i] = min + rand() % (max - min);
+	
 
-    }
-    bool hhh = true;
-    for (int i = 0; i <= SIZE - 1; i++) {
-        for (int j = 0; j < SIZE - 1 - i; j++) {
-            bubiterazz++;
-            if (array1[j] > array1[j + 1]) {
-                swap(array1[j], array1[j + 1]);
-                hhh = false;
-            }
-
-
-
-
-        }
-        if (hhh == true) break;
-
-    }
-    Sleep(1000);
-    cout << " bubble sort complited: " << endl;
-    Sleep(1000);
-    cout << " start insertions sort:" << endl;
-    int insertioniteraz = 0;
-    int array2[SIZE] = {};
-    for (int i = 0; i < SIZE; i++) {
-        array2[i] = min + rand() % (max - min);
-
-    }
-
-    for (int i = 1; i < SIZE; i++) {
-        for (int j = i; j > 0; j--) {
-            insertioniteraz++;
-            if (array2[j] < array2[j - 1]) {
-                swap(array2[j], array2[j - 1]);
-            }
-            else break;
-
-        }
-
-
-    }
-
-
-    Sleep(1000);
-    cout << "insertions sort complited : " << endl;
-    Sleep(1000);
-    cout << " start shaker sort: " << endl;
-    int array[SIZE] = { };
-    for (int i = 0; i < SIZE; i++) {
-        array[i] = min + rand() % (max - min);
-
-    }
-
-    bool hh = true;
-    for (int begin = 0; begin < end;) {
-        for (int j = begin; j < end - 1; j++) {
-
-            if (array[j] > array[j + 1]) {
-                swap(array[j], array[j + 1]);
-                hh = false;
-            }
-
-            iterazz++;
-
-
-
-        }
-        if (hh == true) {
-            break;
-        }
-        end--;
-
-        hh = true;
-        for (int j = end - 1; j > begin; j--) {
-            if (array[j] < array[j - 1]) {
-                swap(array[j], array[j - 1]);
-                hh = false;
-                iterazz++;
-            }
-        }
-
-        if (hh == true) {
-            break;
-        }
-        begin++;
-
-
-
-    }
-    Sleep(1000);
-    cout << "shaker sort complited: " << endl;
-    Sleep(1000);
-    cout << endl << "bubble sort(count of iterations): " << bubiterazz << endl;
-    cout << endl << "insertion sort(count of iterations): " << insertioniteraz << endl;
-    cout << endl << " shaker sort(count of iterations): " << iterazz << endl;
+	Magazin<AmmoType_5_56*>  m1(10);
+	for (int i = 0; i < 5; i++) {
+		m5_56.load(new AmmoType_5_56_BP);
+	}
+	m5_56.info();
+	AmmoType5_56* ammo1 = new AmmoType5_56_BP(5);
+	AmmoType5_56* ammo2 = new AmmoType5_56_PS(7);
+	m1.loadAmmo(ammo1);
+	m1.loadAmmo(ammo2);
+	cout << m1.unLoadBullet()->getDamage() << endl;
+	cout << m1.unLoadBullet()->getDamage() << endl;
+	return 0;
 }
